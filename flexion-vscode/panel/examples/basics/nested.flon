@@ -1,0 +1,47 @@
+! Nested Objects Example
+! Demonstrates complex hierarchical structures
+
+@application (
+    name: "User Management System"
+    version: "2.0.0"
+    
+    database: object: (
+        host: "localhost"
+        port: int: 5432
+        credentials: object: (
+            username: "admin"
+            password: "secure123"
+            ssl: bool: true
+        )
+    )
+    
+    server: object: (
+        host: "0.0.0.0"
+        port: int: 8080
+        middleware: list: ["cors", "auth", "logger"]
+        security: object: (
+            rateLimit: int: 100
+            timeout: int: 30000
+            cors: object: (
+                enabled: bool: true
+                origins: list: ["http://localhost:3000", "https://app.com"]
+            )
+        )
+    )
+)
+
+@users/admin (
+    id: int: 1
+    username: "admin"
+    profile: object: (
+        firstName: "System"
+        lastName: "Administrator"
+        email: "admin@example.com"
+        permissions: list: ["read", "write", "delete", "manage"]
+        settings: object: (
+            theme: "dark"
+            notifications: bool: true
+            language: "en"
+        )
+    )
+)

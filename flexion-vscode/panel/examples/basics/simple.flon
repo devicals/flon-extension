@@ -1,0 +1,20 @@
+! Simple Data Example
+! This demonstrates basic Flexion syntax
+
+@root (
+    name: string: "My Application"
+    version: string: "1.0.0"
+    active: bool: true
+)
+
+@root/config (
+    port: int: 8080
+    host: string: "localhost"
+    debug: bool: false
+)
+
+@root/metadata (
+    author: "John Doe"
+    created: "2026-01-01"
+    license: "MIT"
+)

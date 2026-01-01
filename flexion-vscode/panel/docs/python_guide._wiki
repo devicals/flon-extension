@@ -1,0 +1,508 @@
+# Python Interpreter Guide
+
+The Flexion Python interpreter allows you to parse, query, and convert Flexion files programmatically.
+
+For general Flexion syntax, see the **Flexion Language Guide**.
+
+---
+
+## Installation
+
+```bash
+pip install flexion-interpreter
+```
+
+---
+
+## Quick Start
+
+### Import the Module
+
+```python
+from interpreter import flon
+
+# Load a file
+flon.load('data.flon')
+
+# Get data
+value = flon.get('root/config')
+print(value)
+```
+
+---
+
+## Core Functions
+
+### Loading Data
+
+#### Load from File
+
+```python
+from interpreter import flon
+
+flon.load('path/to/file.flon')
+```
+
+#### Parse from String
+
+```python
+from interpreter import flon
+
+content = """
+@root (
+    name: "Example"
+    version: int: 1
+)
+"""
+
+flon.parse(content)
+```
+
+---
+
+## Querying Data
+
+### Get Values
+
+```python
+from interpreter import flon
+
+flon.load('config.flon')
+
+# Get entire item
+data = flon.get('root/config')
+# Returns: {'host': 'localhost', 'port': 5432}
+
+# Get specific label value
+host = flon.get('root/config/host')
+# Returns: 'localhost'
+```
+
+### Get Types
+
+```python
+from interpreter import flon
+
+flon.load('config.flon')
+
+# Get type information
+type_info = flon.get('root/config/port', 'type')
+# Returns: 'int'
+
+# Item type
+item_type = flon.get('root/config', 'type')
+# Returns: 'item'
+```
+
+---
+
+## Pretty Printing
+
+### Basic Usage
+
+```python
+from interpreter import flon
+
+flon.load('data.flon')
+
+# Pretty print with default indent (2 spaces)
+print(flon.pretty('root/config'))
+```
+
+### Custom Indentation
+
+```python
+from interpreter import flon
+
+# One-time custom indent
+print(flon.pretty('root/config', indent=4))
+
+# Set global default
+flon._env('indent', 4)
+print(flon.pretty('root/config'))
+```
+
+---
+
+## Format Conversion
+
+The `converter` module handles FLON ↔ JSON conversion.
+
+### Convert Files
+
+```python
+from interpreter import converter
+
+# FLON to JSON
+converter.convert('data.flon', 'json')
+# Creates: data.json
+
+# JSON to FLON
+converter.convert('data.json', 'flon')
+# Creates: data.flon
+
+# Custom output name
+converter.convert('data.flon', 'json', 'output.json')
+```
+
+### Convert Data Strings
+
+```python
+from interpreter import converter
+
+# FLON string to JSON file
+flon_content = """
+@root (
+    name: "Test"
+)
+"""
+
+converter.convert_data(flon_content, 'json')
+# Creates: output.json
+
+# With custom name
+converter.convert_data(flon_content, 'json', 'result.json')
+
+# JSON to FLON
+json_content = '{"name": "Test", "value": 42}'
+converter.convert_data(json_content, 'flon', 'output.flon')
+```
+
+---
+
+## Environment Configuration
+
+### Available Settings
+
+```python
+from interpreter import flon
+
+# Set default indent for pretty()
+flon._env('indent', 4)
+
+# Now all pretty() calls use 4-space indent
+print(flon.pretty('root/data'))
+```
+
+### Supported Variables
+
+- `indent` (int): Default indentation spaces for `pretty()` (default: 2)
+
+---
+
+## Advanced Usage
+
+### Working with Complex Structures
+
+```python
+from interpreter import flon
+
+flon.parse("""
+@api/users (
+    data: list: [
+        (
+            id: int: 1
+            name: "Alice"
+            active: bool: true
+        ),
+        (
+            id: int: 2
+            name: "Bob"
+            active: bool: false
+        )
+    ]
+)
+""")
+
+# Get the entire list
+users = flon.get('api/users/data')
+# Returns list of dictionaries
+
+# Access specific user
+print(users[0]['name'])  # Alice
+```
+
+### Handling References
+
+```python
+from interpreter import flon
+
+flon.parse("""
+@themes/dark (
+    bg: "#000000"
+    fg: "#FFFFFF"
+)
+
+@settings (
+    theme: @themes/dark
+)
+""")
+
+# The reference is preserved as a string
+theme_ref = flon.get('settings/theme')
+# Returns: '@themes/dark'
+
+# To resolve it, query the reference target
+theme_data = flon.get('themes/dark')
+# Returns: {'bg': '#000000', 'fg': '#FFFFFF'}
+```
+
+### Type Checking
+
+```python
+from interpreter import flon
+
+flon.parse("""
+@data (
+    count: int: 42
+    price: float: 19.99
+    active: bool: true
+    name: string: "Product"
+)
+""")
+
+# Check types programmatically
+def validate_types(path):
+    types = {
+        'count': 'int',
+        'price': 'float',
+        'active': 'bool',
+        'name': 'string'
+    }
+    
+    for field, expected_type in types.items():
+        actual_type = flon.get(f'{path}/{field}', 'type')
+        if actual_type != expected_type:
+            print(f"Type mismatch: {field}")
+
+validate_types('data')
+```
+
+---
+
+## Error Handling
+
+### File Not Found
+
+```python
+from interpreter import flon
+
+try:
+    flon.load('nonexistent.flon')
+except FileNotFoundError as e:
+    print(f"Error: {e}")
+```
+
+### Path Not Found
+
+```python
+from interpreter import flon
+
+flon.load('data.flon')
+
+try:
+    value = flon.get('invalid/path')
+except KeyError as e:
+    print(f"Path error: {e}")
+```
+
+### Invalid Mode
+
+```python
+from interpreter import flon
+
+try:
+    value = flon.get('root/data', 'invalid')
+except ValueError as e:
+    print(f"Mode error: {e}")
+```
+
+---
+
+## Complete Examples
+
+### Configuration Manager
+
+```python
+from interpreter import flon
+
+class ConfigManager:
+    def __init__(self, config_file):
+        flon.load(config_file)
+        self.config = flon.get('root/config')
+    
+    def get(self, key, default=None):
+        return self.config.get(key, default)
+    
+    def get_type(self, key):
+        return flon.get(f'root/config/{key}', 'type')
+
+# Usage
+config = ConfigManager('app.flon')
+port = config.get('port', 8080)
+print(f"Server running on port {port}")
+```
+
+### Data Validator
+
+```python
+from interpreter import flon
+
+def validate_schema(data_file, schema_file):
+    # Load data and schema
+    flon.load(data_file)
+    data = flon.get('root/data')
+    
+    flon.load(schema_file)
+    schema = flon.get('root/schema')
+    
+    errors = []
+    
+    for field, expected_type in schema.items():
+        if field not in data:
+            errors.append(f"Missing field: {field}")
+        else:
+            actual_type = type(data[field]).__name__
+            if actual_type != expected_type:
+                errors.append(f"Type mismatch: {field}")
+    
+    return errors
+
+# Usage
+errors = validate_schema('user.flon', 'user-schema.flon')
+if errors:
+    print("Validation errors:", errors)
+else:
+    print("Valid!")
+```
+
+### Batch Converter
+
+```python
+from interpreter import converter
+from pathlib import Path
+
+def batch_convert(directory, target_format):
+    """Convert all .flon or .json files in a directory"""
+    source_ext = '.json' if target_format == 'flon' else '.flon'
+    
+    for file in Path(directory).glob(f'*{source_ext}'):
+        print(f"Converting {file.name}...")
+        output = converter.convert(str(file), target_format)
+        print(f"Created {output}")
+
+# Usage
+batch_convert('./data', 'json')
+```
+
+---
+
+## Module Reference
+
+### `flon` Module
+
+```python
+from interpreter import flon
+
+# Functions
+flon.load(filepath)          # Load .flon file
+flon.parse(content)          # Parse string content
+flon.get(path, mode='value') # Get data or type
+flon.pretty(path, mode='value', indent=None)  # Format output
+flon._env(variable, value)   # Set environment variable
+```
+
+### `converter` Module
+
+```python
+from interpreter import converter
+
+# Functions
+converter.convert(filepath, target_type, output_name=None)
+converter.convert_data(content, target_type, output_name=None)
+```
+
+---
+
+## Tips & Best Practices
+
+1. **Reuse Parser Instance:** For multiple operations on the same file, load once
+2. **Handle Errors:** Always wrap file operations in try-except blocks
+3. **Validate Paths:** Check if paths exist before querying
+4. **Type Safety:** Use `get(..., 'type')` for runtime type checking
+5. **Pretty Print for Debugging:** Use `pretty()` to inspect complex structures
+
+---
+
+## Common Patterns
+
+### Load and Query Pattern
+
+```python
+from interpreter import flon
+
+# Load file
+flon.load('config.flon')
+
+# Query multiple values
+host = flon.get('root/database/host')
+port = flon.get('root/database/port')
+debug = flon.get('root/app/debug')
+
+print(f"Connecting to {host}:{port} (debug={debug})")
+```
+
+### Parse and Convert Pattern
+
+```python
+from interpreter import flon, converter
+
+# Parse FLON string
+content = """@root (data: "example")"""
+flon.parse(content)
+
+# Convert to JSON
+converter.convert_data(content, 'json', 'output.json')
+```
+
+### Multi-file Configuration
+
+```python
+from interpreter import flon
+
+def load_config(base_path):
+    config = {}
+    
+    # Load main config
+    flon.load(f'{base_path}/main.flon')
+    config['main'] = flon.get('root')
+    
+    # Load environment-specific
+    flon.load(f'{base_path}/prod.flon')
+    config['prod'] = flon.get('root')
+    
+    return config
+
+config = load_config('./configs')
+```
+
+---
+
+## API Reference Summary
+
+### Classes
+
+- `FlexionParser`: Main parser class
+
+### Module Functions
+
+**flon:**
+- `load(filepath)` → `FlexionParser`
+- `parse(content)` → `FlexionParser`
+- `get(path, mode='value')` → `Any`
+- `pretty(path, mode='value', indent=None)` → `str`
+- `_env(variable, value)` → `None`
+
+**converter:**
+- `convert(filepath, target_type, output_name=None)` → `str`
+- `convert_data(content, target_type, output_name=None)` → `str`

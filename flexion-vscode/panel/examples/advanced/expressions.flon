@@ -1,0 +1,53 @@
+! Evaluated Expressions Example
+! Demonstrates the $(...)  syntax for dynamic values
+
+@arithmetic (
+    sum: int: $(10 + 5)
+    difference: int: $(20 - 8)
+    product: int: $(6 * 7)
+    quotient: float: $(100 / 3)
+    
+    ! Complex expressions
+    complex: int: $((10 + 5) * 2)
+    nested: float: $(((100 + 50) / 2) * 1.5)
+)
+
+@strings (
+    greeting: string: $("Hello" + " " + "World")
+    path: string: $("/home/" + "user" + "/documents")
+    filename: string: $("file_" + "2026" + ".txt")
+)
+
+@boolean (
+    negation: bool: $(!false)
+    and: bool: $(true && true)
+    or: bool: $(false || true)
+    complex: bool: $((true && false) || true)
+)
+
+@calculations (
+    ! Tax calculation
+    subtotal: float: 100.00
+    taxRate: float: 0.15
+    total: float: $(100.00 * 1.15)
+    
+    ! Discount
+    originalPrice: float: 50.00
+    discountPercent: float: 0.20
+    finalPrice: float: $(50.00 * 0.80)
+)
+
+@measurements (
+    inches: int: 12
+    centimeters: float: $(12 * 2.54)
+    
+    fahrenheit: int: 68
+    celsius: float: $((68 - 32) * 5 / 9)
+)
+
+@computed (
+    ! Combining different operations
+    result1: string: $("Result: " + "Complete")
+    result2: int: $(5 + 5)
+    result3: bool: $(true && !false)
+)
