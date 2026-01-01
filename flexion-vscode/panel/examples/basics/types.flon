@@ -1,0 +1,43 @@
+! Data Types Example
+! Shows all available Flexion data types
+
+@primitives (
+    ! Strings
+    text: string: "Hello World"
+    short_text: str: "Alias for string"
+    
+    ! Numbers
+    whole_number: int: 42
+    also_int: integer: 100
+    decimal_number: float: 3.14159
+    also_float: decimal: 2.71828
+    
+    ! Booleans
+    flag: bool: true
+    another_flag: boolean: false
+    
+    ! Null/Empty
+    nothing: void: null
+    also_nothing: null: null
+    undefined_value: undefined: null
+)
+
+@collections (
+    ! Lists
+    numbers: list: [1, 2, 3, 4, 5]
+    names: array: ["Alice", "Bob", "Charlie"]
+    
+    ! Objects
+    nested: object: (
+        key1: "value1"
+        key2: int: 42
+        key3: bool: true
+    )
+)
+
+@keywords (
+    ! Keywords (unquoted strings)
+    theme: dark
+    environment: production
+    status: active
+)

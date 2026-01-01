@@ -1,0 +1,79 @@
+! References & Templates Example
+! Shows how to use @ references and # templates
+
+!! Template Definitions !!
+
+@templates user (
+    id: int: 0
+    username: string: ""
+    email: string: ""
+    active: bool: true
+)
+
+@templates product (
+    id: int: 0
+    name: string: ""
+    price: float: 0.0
+    inStock: bool: true
+)
+
+!! Using Templates !!
+
+@users/alice (
+    template: #user
+    id: int: 1
+    username: "alice"
+    email: "alice@example.com"
+)
+
+@users/bob (
+    template: #user
+    id: int: 2
+    username: "bob"
+    email: "bob@example.com"
+    active: bool: false
+)
+
+@products/laptop (
+    template: #product
+    id: int: 101
+    name: "Gaming Laptop"
+    price: float: 1299.99
+)
+
+!! Item References !!
+
+@themes/dark (
+    background: "#1e1e1e"
+    foreground: "#d4d4d4"
+    accent: "#007acc"
+)
+
+@themes/light (
+    background: "#ffffff"
+    foreground: "#000000"
+    accent: "#0066cc"
+)
+
+@settings (
+    currentTheme: @themes/dark
+    backupTheme: @themes/light
+)
+
+!! Nested References !!
+
+@config/database (
+    host: "localhost"
+    port: int: 5432
+)
+
+@config/cache (
+    host: "localhost"
+    port: int: 6379
+)
+
+@application (
+    name: "MyApp"
+    database: @config/database
+    cache: @config/cache
+)

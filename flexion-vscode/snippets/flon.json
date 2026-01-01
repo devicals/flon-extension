@@ -1,0 +1,152 @@
+{
+  "Path Declaration": {
+    "prefix": "path",
+    "body": [
+      "@${1:path_name} (",
+      "\t${2:key}: ${3:value}",
+      ")"
+    ],
+    "description": "Create a new path declaration"
+  },
+  "Root Path": {
+    "prefix": "root",
+    "body": [
+      "@root (",
+      "\t${1:key}: ${2:value}",
+      ")"
+    ],
+    "description": "Create root path"
+  },
+  "Nested Path": {
+    "prefix": "npath",
+    "body": [
+      "@${1:parent}/${2:child} (",
+      "\t${3:key}: ${4:value}",
+      ")"
+    ],
+    "description": "Create nested path"
+  },
+  "Template Definition": {
+    "prefix": "template",
+    "body": [
+      "@templates ${1:template_name} (",
+      "\t${2:field}: ${3:type}",
+      ")"
+    ],
+    "description": "Define a template"
+  },
+  "Template Usage": {
+    "prefix": "use-template",
+    "body": [
+      "#${1:template_name} (",
+      "\t${2:value}",
+      ")"
+    ],
+    "description": "Use a defined template"
+  },
+  "Object": {
+    "prefix": "obj",
+    "body": [
+      "${1:label}: object: (",
+      "\t${2:key}: ${3:value}",
+      ")"
+    ],
+    "description": "Create an object"
+  },
+  "List": {
+    "prefix": "list",
+    "body": [
+      "${1:label}: list: [",
+      "\t${2:item}",
+      "]"
+    ],
+    "description": "Create a list"
+  },
+  "Typed List": {
+    "prefix": "tlist",
+    "body": [
+      "${1:label}: list::${2:type}: [",
+      "\t${3:item}",
+      "]"
+    ],
+    "description": "Create a typed list"
+  },
+  "String Value": {
+    "prefix": "str",
+    "body": "${1:label}: string: \"${2:value}\"",
+    "description": "String value with type"
+  },
+  "Integer Value": {
+    "prefix": "int",
+    "body": "${1:label}: int: ${2:0}",
+    "description": "Integer value with type"
+  },
+  "Float Value": {
+    "prefix": "float",
+    "body": "${1:label}: float: ${2:0.0}",
+    "description": "Float value with type"
+  },
+  "Boolean Value": {
+    "prefix": "bool",
+    "body": "${1:label}: bool: ${2|true,false|}",
+    "description": "Boolean value with type"
+  },
+  "Reference": {
+    "prefix": "ref",
+    "body": "${1:label}: @${2:path}",
+    "description": "Reference to another path"
+  },
+  "Void/Null": {
+    "prefix": "void",
+    "body": "${1:label}: void",
+    "description": "Void/null value"
+  },
+  "Type Alternative": {
+    "prefix": "alt-type",
+    "body": "${1:label}: ${2:type1} | ${3:type2}: ${4:value}",
+    "description": "Value with alternative types"
+  },
+  "Unlabeled Item": {
+    "prefix": "unlabeled",
+    "body": [
+      "_: ${1:type}: (",
+      "\t${2:content}",
+      ")"
+    ],
+    "description": "Unlabeled item"
+  },
+  "Line Comment": {
+    "prefix": "comment",
+    "body": "! ${1:comment}",
+    "description": "Single line comment"
+  },
+  "Block Comment": {
+    "prefix": "block-comment",
+    "body": [
+      "!!",
+      "${1:comment}",
+      "!!"
+    ],
+    "description": "Block comment"
+  },
+  "Complete Example": {
+    "prefix": "flon-example",
+    "body": [
+      "@templates ${1:template_name} (",
+      "\t${2:field}: ${3:type}",
+      ")",
+      "",
+      "@root (",
+      "\tid: string: \"${4:id}\"",
+      "\tname: \"${5:name}\"",
+      "\tage: int: ${6:0}",
+      "\tisActive: bool: ${7|true,false|}",
+      "\t",
+      "\tdata: object: (",
+      "\t\t${8:key}: ${9:value}",
+      "\t)",
+      ")"
+    ],
+    "description": "Complete Flexion example"
+  }
+}

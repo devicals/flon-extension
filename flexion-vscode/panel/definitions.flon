@@ -1,0 +1,123 @@
+@root/panels (
+	docs: "Documentation"
+    examples: "Examples"
+)
+
+@root/panels/docs (
+    file_type: ".md"
+    wiki: object: (
+        name: "Flexion Language Guide"
+        jump: true
+        folder: false
+    )
+    python_guide: object: (
+        name: "Python Interpreter Guide"
+        jump: true
+        folder: false
+    )
+    CHANGELOG: object: (
+        name: "Changelog"
+        jump: true
+        folder: false
+    )
+)
+
+@root/panels/examples (
+    file_type: ".flon"
+    basics: object: (
+        name: "Basic Syntax"
+        folder: true
+    )
+    comparisons: object: (
+        name: "JSON vs FLON"
+        folder: true
+    )
+    advanced: object: (
+        name: "Advanced Features"
+        folder: true
+    )
+    python: object: (
+        name: "Python Usage Examples"
+        folder: true
+    )
+)
+
+@root/panels/examples/basics (
+    file_type: ".flon"
+    simple: object: (
+        name: "Simple Data"
+        folder: false
+    )
+    types: object: (
+        name: "Data Types"
+        folder: false
+    )
+    nested: object: (
+        name: "Nested Objects"
+        folder: false
+    )
+    references: object: (
+        name: "References & Templates"
+        folder: false
+    )
+)
+
+@root/panels/examples/comparisons (
+    file_type: ".flon"
+    comparison: object: (
+        name: "Clean"
+        folder: false
+    )
+    comparison_commented: object: (
+        name: "Explained"
+        folder: false
+    )
+)
+
+@root/panels/examples/advanced (
+    file_type: ".flon"
+    expressions: object: (
+        name: "Evaluated Expressions"
+        folder: false
+    )
+    complex: object: (
+        name: "Complex Structures"
+        folder: false
+    )
+)
+
+@root/panels/examples/python (
+    file_type: ".py"
+    basic_usage: object: (
+        name: "Basic Usage"
+        folder: false
+    )
+    conversion: object: (
+        name: "Format Conversion"
+        folder: false
+    )
+    advanced_parsing: object: (
+        name: "Advanced Parsing"
+        folder: false
+    )
+    workflows: object: (
+        name: "Example Workflows"
+        folder: true
+    )
+)
+
+@root/panels/examples/python/workflows (
+    file_type: ".py"
+    parse_convert: object: (
+        name: "Parse and Convert"
+        folder: false
+    )
+    config_manage: object: (
+        name: "Configuration Manager"
+        folder: false
+    )
+    batch_conversion: object: (
+        name: "Batch Conversion"
+        folder: false
+    )
+)
